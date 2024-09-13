@@ -1,6 +1,7 @@
 const calculatorKeys = Array.from(document.getElementsByClassName("key"));
 const display = document.getElementById("calculator__display");
 const res = document.getElementById("res");
+const msg = document.getElementById("msg");
 
 $(document).ready(function() {
 
@@ -16,40 +17,77 @@ const operatorToFunction = {
   "÷": (x, y) => x / y,
 }
 
+const getSign = {
+  "+": (x) => x,
+  "-": (x) => -x,
+}
+
 const addOperator = (operator, operand) => {
   operationList.push(operand, operator);
   display.value = operator;
   // console.log(operator);
 }
 
+const countDecimals = (num) => {
+  return num.toString().split(".")[1].length || 0;
+}
+
 const calculate = () => {
-  res.textContent = "calculate() from function";
+  const parsedOperationList = [];
+  const calculationArray = [];
+  let result = 0;
+
+  res.textContent = "res: " + "calculate() from function";
   
-  // first loop for high priority operators
-  // TODO: update operationList array with new numbers, maybe removing that item
+  // first loop for high priority operators (*, /)
   for (let i = 0; i < operationList.length; i++) {
     if (operationList[i] == "×" || operationList[i] == "÷") {
-      res.textContent = "calculate() from loop";
-      res.textContent = operatorToFunction[operationList[i]](operationList[i - 1], operationList[i + 1]);
+      const operationResult = operatorToFunction[operationList[i]](
+        parsedOperationList[parsedOperationList.length - 1], 
+        operationList[i + 1]
+      );
+      parsedOperationList.pop();
+      parsedOperationList.push(operationResult);
+      i++;
+      // debugging
+      res.textContent = "res: " + operationResult;
+    } else {
+      parsedOperationList.push(operationList[i]);
     }
   }
+  // second loop with low priority operators (+, -)
+  for (let i = 0; i < parsedOperationList.length; i++) {
+    if (parsedOperationList[i] == "+" || parsedOperationList[i] == "-") {
+      const toPush = getSign[parsedOperationList[i]](parsedOperationList[i + 1]);
+      calculationArray.push(Number(toPush));
+      i++;
+    } else {
+      const toPush = parsedOperationList[i];
+      calculationArray.push(Number(toPush));
+    }
+  }
+  result = calculationArray.reduce((accumulator, current) => 
+    accumulator + current, 0);
+  // msg.textContent = "msg: " + parsedOperationList.join(" ");
+  msg.textContent = "msg: " + calculationArray.join("|");
+  res.textContent = "res: " + result;
+  display.value = countDecimals(result) > 10 ? result.toFixed(10) : result;
+  operationList = [];
 }
 
 calculatorKeys.forEach((key) => {
   key.addEventListener("click", (value) => {
     const content = value.target.textContent;
-    /*if (!isNaN(Number(num))) {
-      display.value === "0" ? display.value = num : display.value += num;
-    } else if (value.target.textContent === "AC") {
-      display.value = "0";
-    }*/
    if (key.classList.contains("number")) {
      display.value === "0" || isNaN(Number(display.value)) ? display.value = content : display.value += content;
     } else if (key.classList.contains("ac")) {
       display.value = "0";
       operationList = [];
+      msg.textContent = "";
+      res.textContent = "";
     } else if (key.classList.contains("operator")) {
       addOperator(content, display.value);
+      isDecimal = false;
       console.log(operationList);
     } else if (key.classList.contains("decimal") && !isDecimal) {
       display.value += ".";
