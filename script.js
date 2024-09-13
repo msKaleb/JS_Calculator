@@ -75,7 +75,7 @@ const calculate = () => {
   // debugging
   // msg.textContent = "msg: " + parsedOperationList.join(" ");
   // msg.textContent = "msg: " + calculationArray.join("|");
-  res.textContent = "res: " + result;
+  // res.textContent = "res: " + result;
   display.value = countDecimals(result) > 10 ? result.toFixed(10) : result;
   operationList = [];
 }
