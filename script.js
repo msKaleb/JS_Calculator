@@ -9,6 +9,7 @@ $(document).ready(function() {
 
 let operationList = [];
 let isDecimal = false;
+let gotResult = false;
 
 const operatorToFunction = {
   "+": (x, y) => x + y,
@@ -84,6 +85,10 @@ calculatorKeys.forEach((key) => {
   key.addEventListener("click", (value) => {
     const content = value.target.textContent;
    if (key.classList.contains("number")) {
+    if (gotResult) {
+      gotResult = false;
+      display.value = "";
+    }
      display.value === "0" || isNaN(Number(display.value)) ? display.value = content : display.value += content;
     } else if (key.classList.contains("ac")) {
       display.value = "0";
@@ -100,7 +105,13 @@ calculatorKeys.forEach((key) => {
       isDecimal = true;
     } else if (key.classList.contains("equals")) {
       operationList.push(display.value);
-      isNaN(operationList[operationList.length - 1]) ? alert("Invalid expression") : calculate();
+      if (isNaN(operationList[operationList.length - 1])) {
+        alert("Invalid expression")
+      } else {
+        calculate();
+        gotResult = true;
+      }
+      // isNaN(operationList[operationList.length - 1]) ? alert("Invalid expression") : calculate();
    }
   });
 });
