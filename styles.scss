@@ -1,64 +1,65 @@
-$scr_width: 95%;
-$scr_height: 10vh;
-$scr_max_width: 400px;
-$scr_bg-color: rgb(61, 61, 61);
-$scr_color: whitesmoke;
-$font-size: 25px;
+$display_width: 95%;
+$display_height: 50px;
+$display_max_width: 400px;
+$display_bg-color: rgb(61, 61, 61);
+$display_color: whitesmoke;
+$font-size: 40px;
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-// /* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
+// fonts from cdnfonts.com
+$lcd: 'LCD', monospace;
+$lcd2: 'LCD2', monospace;
+$lcd_mono2: 'LCDMono2', monospace;
+$lcd_mono: 'LCDMono', monospace;
+$lcd_digitalism: 'Digitalism', monospace;
 
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 .container-fluid, html {
-  background-color: var(---bs-primary-bg-subtle);
+  background-color: #0a0a23;
+  color: whitesmoke;
+}
+
+html {
+  margin-top: 10vh;
 }
 
 main {
   background-color: lightblue;
   margin: auto;
   max-width: 400px;
-  min-width: 250px;
 }
+
 #calculator__display {
-  // width: $scr_width;
-  height: $scr_height;
+  height: $display_height;
   margin-bottom: 10px;
-  background-color: $scr_bg-color;
-  color: $scr_color;
+  background-color: $display_bg-color;
+  color: $display_color;
+  font-family: $lcd;
   font-size: $font-size;
   text-align: right;
-  font-family: monospace;
-  text-decoration: none;
+  padding-top: $display_height / 4;
 }
 
 #calculator__keys {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  column-gap: 3px;;
 }
 
 .key {
   box-shadow: 0px 2px grey;
   background-color: black;
-  // height: 50px;
+  margin: 3px;
   cursor: pointer;
+  span {
+    font-size: x-large;
+    font-weight: bold;
+  }
 }
-
-// .key:hover {
-
-// }
 
 .key:active {
   box-shadow: 0 0;
@@ -69,11 +70,5 @@ main {
 .equals {
   grid-column-start: 4;
   grid-row-start: 2;
-  grid-row-end: 16;
+  grid-row-end: 6;
 }
-
-// .key--equal {
-//   background-image: linear-gradient(to bottom, #fe886a, #ff7033);
-//   grid-column: -2;
-//   grid-row: 2 / span 4;
-// }

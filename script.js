@@ -25,20 +25,22 @@ const getSign = {
 const addOperator = (operator, operand) => {
   operationList.push(operand, operator);
   display.value = operator;
-  // console.log(operator);
 }
 
 const countDecimals = (num) => {
-  return num.toString().split(".")[1].length || 0;
+  numString = num.toString();
+
+  if (numString.indexOf(".") === -1) {
+    return 0;
+  } else {
+    return numString.split(".")[1].length;
+  }
 }
 
 const calculate = () => {
   const parsedOperationList = [];
   const calculationArray = [];
   let result = 0;
-
-  res.textContent = "res: " + "calculate() from function";
-  
   // first loop for high priority operators (*, /)
   for (let i = 0; i < operationList.length; i++) {
     if (operationList[i] == "×" || operationList[i] == "÷") {
@@ -50,11 +52,12 @@ const calculate = () => {
       parsedOperationList.push(operationResult);
       i++;
       // debugging
-      res.textContent = "res: " + operationResult;
+      // res.textContent = "res: " + operationResult;
     } else {
       parsedOperationList.push(operationList[i]);
     }
   }
+
   // second loop with low priority operators (+, -)
   for (let i = 0; i < parsedOperationList.length; i++) {
     if (parsedOperationList[i] == "+" || parsedOperationList[i] == "-") {
@@ -68,8 +71,10 @@ const calculate = () => {
   }
   result = calculationArray.reduce((accumulator, current) => 
     accumulator + current, 0);
+
+  // debugging
   // msg.textContent = "msg: " + parsedOperationList.join(" ");
-  msg.textContent = "msg: " + calculationArray.join("|");
+  // msg.textContent = "msg: " + calculationArray.join("|");
   res.textContent = "res: " + result;
   display.value = countDecimals(result) > 10 ? result.toFixed(10) : result;
   operationList = [];
@@ -83,8 +88,9 @@ calculatorKeys.forEach((key) => {
     } else if (key.classList.contains("ac")) {
       display.value = "0";
       operationList = [];
-      msg.textContent = "";
-      res.textContent = "";
+      isDecimal = false;
+      // msg.textContent = "";
+      // res.textContent = "";
     } else if (key.classList.contains("operator")) {
       addOperator(content, display.value);
       isDecimal = false;
@@ -94,7 +100,6 @@ calculatorKeys.forEach((key) => {
       isDecimal = true;
     } else if (key.classList.contains("equals")) {
       operationList.push(display.value);
-      res.textContent = isNaN(operationList[operationList.length - 1]);
       isNaN(operationList[operationList.length - 1]) ? alert("Invalid expression") : calculate();
    }
   });
