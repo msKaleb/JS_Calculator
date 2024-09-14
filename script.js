@@ -42,6 +42,7 @@ const calculate = () => {
   const parsedOperationList = [];
   const calculationArray = [];
   let result = 0;
+
   // first loop for high priority operators (*, /)
   for (let i = 0; i < operationList.length; i++) {
     if (operationList[i] == "×" || operationList[i] == "÷") {
@@ -84,11 +85,12 @@ const calculate = () => {
 calculatorKeys.forEach((key) => {
   key.addEventListener("click", (value) => {
     const content = value.target.textContent;
-   if (key.classList.contains("number")) {
-    if (gotResult) {
-      gotResult = false;
-      display.value = "";
-    }
+    
+    if (key.classList.contains("number")) {
+      if (gotResult) {
+        gotResult = false;
+        display.value = "";
+      }
      display.value === "0" || isNaN(Number(display.value)) ? display.value = content : display.value += content;
     } else if (key.classList.contains("ac")) {
       display.value = "0";
@@ -101,7 +103,8 @@ calculatorKeys.forEach((key) => {
       isDecimal = false;
       console.log(operationList);
     } else if (key.classList.contains("decimal") && !isDecimal) {
-      display.value += ".";
+      gotResult ? display.value = "0." : display.value += ".";
+      gotResult = false;
       isDecimal = true;
     } else if (key.classList.contains("equals")) {
       operationList.push(display.value);
