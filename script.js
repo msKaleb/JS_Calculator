@@ -91,7 +91,7 @@ calculatorKeys.forEach((key) => {
         gotResult = false;
         display.value = "";
       }
-     display.value === "0" || isNaN(Number(display.value)) ? display.value = content : display.value += content;
+      display.value === "0" || isNaN(Number(display.value)) ? display.value = content : display.value += content;
     } else if (key.classList.contains("ac")) {
       display.value = "0";
       operationList = [];
@@ -101,21 +101,27 @@ calculatorKeys.forEach((key) => {
     } else if (key.classList.contains("operator")) {
       addOperator(content, display.value);
       isDecimal = false;
-      console.log(operationList);
     } else if (key.classList.contains("decimal") && !isDecimal) {
       gotResult ? display.value = "0." : display.value += ".";
       gotResult = false;
       isDecimal = true;
-    } else if (key.classList.contains("equals")) {
+    } else if (key.classList.contains("equals") && !isNaN(Number(display.value))) {
+      operationList.push(display.value);
+      calculate();
+      msg.textContent = operationList;
+      gotResult = true;
+    }
+    /*} else if (key.classList.contains("equals")) {
       operationList.push(display.value);
       if (isNaN(operationList[operationList.length - 1])) {
         alert("Invalid expression")
       } else {
         calculate();
+        msg.textContent = operationList;
         gotResult = true;
       }
       // isNaN(operationList[operationList.length - 1]) ? alert("Invalid expression") : calculate();
-   }
+   }*/
   });
 });
   
