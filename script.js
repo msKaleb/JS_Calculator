@@ -24,7 +24,12 @@ const getSign = {
 }
 
 const addOperator = (operator, operand) => {
-  operationList.push(operand, operator);
+  if (isNaN(operand)){
+    operationList.pop();
+    operationList.push(operator);
+  } else {
+    operationList.push(operand, operator);
+  }
   display.value = operator;
 }
 
