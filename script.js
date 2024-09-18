@@ -1,11 +1,5 @@
 const calculatorKeys = Array.from(document.getElementsByClassName("key"));
 const display = document.getElementById("calculator__display");
-const res = document.getElementById("res");
-const msg = document.getElementById("msg");
-
-$(document).ready(function() {
-
-});
 
 let operationList = [];
 let isDecimal = false;
@@ -58,8 +52,6 @@ const calculate = () => {
       parsedOperationList.pop();
       parsedOperationList.push(operationResult);
       i++;
-      // debugging
-      // res.textContent = "res: " + operationResult;
     } else {
       parsedOperationList.push(operationList[i]);
     }
@@ -79,10 +71,6 @@ const calculate = () => {
   result = calculationArray.reduce((accumulator, current) => 
     accumulator + current, 0);
 
-  // debugging
-  // msg.textContent = "msg: " + parsedOperationList.join(" ");
-  // msg.textContent = "msg: " + calculationArray.join("|");
-  // res.textContent = "res: " + result;
   display.value = countDecimals(result) > 10 ? result.toFixed(10) : result;
   operationList = [];
 }
@@ -101,13 +89,11 @@ calculatorKeys.forEach((key) => {
       display.value = "0";
       operationList = [];
       isDecimal = false;
-      // msg.textContent = "";
-      // res.textContent = "";
     } else if (key.classList.contains("operator")) {
       addOperator(content, display.value);
       isDecimal = false;
     } else if (key.classList.contains("decimal") && !isDecimal) {
-      gotResult ? display.value = "0." : display.value += ".";
+      gotResult || isNaN(display.value) ? display.value = "0." : display.value += ".";
       gotResult = false;
       isDecimal = true;
     } else if (key.classList.contains("equals") && !isNaN(Number(display.value))) {
@@ -116,18 +102,6 @@ calculatorKeys.forEach((key) => {
       msg.textContent = operationList;
       gotResult = true;
     }
-    /*} else if (key.classList.contains("equals")) {
-      operationList.push(display.value);
-      if (isNaN(operationList[operationList.length - 1])) {
-        alert("Invalid expression")
-      } else {
-        calculate();
-        msg.textContent = operationList;
-        gotResult = true;
-      }
-      // isNaN(operationList[operationList.length - 1]) ? alert("Invalid expression") : calculate();
-   }*/
   });
 });
   
-
