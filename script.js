@@ -99,8 +99,8 @@ calculatorKeys.forEach((key) => {
     } else if (key.classList.contains("equals") && !isNaN(Number(display.value))) {
       operationList.push(display.value);
       calculate();
-      msg.textContent = operationList;
       gotResult = true;
+      isDecimal = false;
     }
   });
 });
